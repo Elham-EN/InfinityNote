@@ -1,8 +1,11 @@
-import type { Config } from "drizzle-kit";
 import * as dotenv from "dotenv";
+import type { Config } from "drizzle-kit";
+
 dotenv.config({ path: ".env" });
 
-if (!process.env.DATABASE_URL) {
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
   console.log("❌ Cannot find database");
 }
 
@@ -11,7 +14,7 @@ export default {
   out: "./migrations",
   driver: "pg",
   dbCredentials: {
-    connectionString: process.env.DATABASE_URL || "",
+    connectionString: connectionString || "",
   },
 } satisfies Config;
 // It checks if the object satisfies the structure defined by the Config type.
