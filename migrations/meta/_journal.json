@@ -15,6 +15,20 @@
       "when": 1704559386080,
       "tag": "0001_clean_madame_hydra",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1704610812374,
+      "tag": "0002_tired_frank_castle",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1704626383069,
+      "tag": "0003_elite_nekra",
+      "breakpoints": true
     }
   ]
 }
