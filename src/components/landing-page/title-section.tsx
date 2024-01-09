@@ -24,18 +24,21 @@ function TitleSection({
           <>
             <h2
               className="text-left text-3xl sm:text-5xl sm:max-w-[750px] md:text-center
-                // font-semibold text-brand-washedPurple"
+                 font-semibold dark:text-brand-washedPurple text-black"
             >
               {title}
             </h2>
-            <p className="dark:text-washed-purple-700 sm:max-w-[450px] md:text-center">
+            <p
+              className="dark:text-washed-purple-700 sm:max-w-[550px] md:text-center 
+              mt-3 mb-8 text-lg md:text-2xl"
+            >
               {subheading}
             </p>
           </>
         ) : (
           <h1
             className="text-left text-4xl sm:text-6xl md:text-center font-semibold 
-            text-brand-washedPurple"
+            dark:text-brand-washedPurple text-black"
           >
             {title}
           </h1>
