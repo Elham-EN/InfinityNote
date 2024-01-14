@@ -5,7 +5,7 @@ interface HomePageLayoutProps {
 }
 
 function HomePageLayout({ children }: HomePageLayoutProps): ReactElement {
-  return <section className=" px-[0px]">{children}</section>;
+  return <section className=" px-[0px] py-20">{children}</section>;
 }
 
 export default HomePageLayout;
