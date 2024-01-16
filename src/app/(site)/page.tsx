@@ -68,7 +68,10 @@ function HomePage(): React.ReactElement {
           ))}
         </div>
       </section>
-      <section className="px-4 sm:px-6 flex flex-col justify-center items-center relative ">
+      <section
+        id="features"
+        className="px-4 sm:px-6 flex flex-col justify-center items-center relative "
+      >
         <div
           className="w-full blur-[120px] rounded-full h-32 absolute bg-brand-primaryPurple/50
             -z-100 top-56"
@@ -86,7 +89,7 @@ function HomePage(): React.ReactElement {
           <Image src={Cal} alt="Banner" className="rounded-2xl" />
         </div>
       </section>
-      <section className="my-16 relative">
+      <section id="testimonials" className="my-16 relative">
         <div
           className="w-full blur-[120px] rounded-full h-32 absolute bg-brand-primaryPurple/50
             -z-100 top-56"
@@ -141,7 +144,7 @@ function HomePage(): React.ReactElement {
           ))}
         </div>
       </section>
-      <section className="mt-20 px-4 sm:px-6">
+      <section id="pricing" className="mt-20 px-4 sm:px-6">
         <TitleSection
           title="The Perfect Plan For You"
           subheading="Experience all the benefits of our platform. Select a plan that suits your needs and take your productivity to new heights."
@@ -153,6 +156,7 @@ function HomePage(): React.ReactElement {
         >
           {PRICING_CARDS.map((card) => (
             <CustomCard
+              id="pricing"
               key={card.planType}
               className={clsx(
                 "w-[300px] rounded-2xl dark:bg-black/40 background-blur-3xl relative ",

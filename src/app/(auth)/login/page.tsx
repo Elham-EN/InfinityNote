@@ -75,7 +75,7 @@ export default function LoginPage(): React.ReactElement {
           An all-In-One Collaboration and Productivity Platform
         </FormDescription>
         <FormField
-          //   disabled={isLoading}
+          disabled={isLoading}
           control={form.control}
           name="email"
           render={({ field }) => (
@@ -93,7 +93,7 @@ export default function LoginPage(): React.ReactElement {
           )}
         />
         <FormField
-          //   disabled={isLoading}
+          disabled={isLoading}
           control={form.control}
           name="password"
           render={({ field }) => (
