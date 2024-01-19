@@ -106,72 +106,75 @@ export default function SignUpPage(): ReactElement {
         <FormDescription className="dark:text-brand-washedPurple text-lg sm:text-x">
           An all-In-One Collaboration and Productivity Platform
         </FormDescription>
-
-        <FormField
-          disabled={isLoading}
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  type="email"
-                  placeholder="Email"
-                  {...field}
-                  className="py-6 text-md sm:text-lg"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          disabled={isLoading}
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Password"
-                  {...field}
-                  className="py-6 text-md md:text-lg"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          disabled={isLoading}
-          control={form.control}
-          name="confirmPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Confirm Password"
-                  {...field}
-                  className="py-6 text-md md:text-lg"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {submitError && <FormMessage>{submitError}</FormMessage>}
         {!confirmation && !codeExchangeError && (
-          <Button
-            type="submit"
-            disabled={isLoading}
-            size={"lg"}
-            className="text-md"
-          >
-            {!isLoading ? "Create Account" : <Loader />}
-          </Button>
+          <>
+            <FormField
+              disabled={isLoading}
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="Email"
+                      {...field}
+                      className="py-6 text-md sm:text-lg"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              disabled={isLoading}
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="Password"
+                      {...field}
+                      className="py-6 text-md md:text-lg"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              disabled={isLoading}
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="Confirm Password"
+                      {...field}
+                      className="py-6 text-md md:text-lg"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {submitError && <FormMessage>{submitError}</FormMessage>}
+
+            <Button
+              type="submit"
+              disabled={isLoading}
+              size={"lg"}
+              className="text-md"
+            >
+              {!isLoading ? "Create Account" : <Loader />}
+            </Button>
+          </>
         )}
+        {submitError && <FormMessage>{submitError}</FormMessage>}
         <span className="self-center">
           Already have an account?{" "}
           <Link href={"/login"} className=" text-purple-400 font-semibold">
