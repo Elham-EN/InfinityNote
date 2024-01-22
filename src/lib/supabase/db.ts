@@ -19,7 +19,7 @@ const db = drizzle(client, { schema });
 const migrateDb = async () => {
   try {
     console.log("🟠 Migrating client");
-    await migrate(db, { migrationsFolder: "migrations" });
+    // await migrate(db, { migrationsFolder: "migrations" });
     console.log("🟢 Successfully Migrated");
   } catch (error) {
     console.log("🔴 Error Migrating client");
