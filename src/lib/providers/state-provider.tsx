@@ -330,7 +330,8 @@ function AppStateProvider({ children }: AppStateProviderProps): React.ReactEleme
   const pathname = usePathname(); // gets the current URL path
 
   const workspaceId = useMemo(() => {
-    // ["dashboard", "workspaceId"]
+    // ["dashboard", "workspaceId", "folderId", "fileId"]
+    // Pathname: "/dashboard/workspaceId/folderId/fileId"
     const urlSegments = pathname.split("/").filter(Boolean);
     if (urlSegments) {
       if (urlSegments.length > 1) {
@@ -395,7 +396,7 @@ export default AppStateProvider;
  * is used outside AppStateProvider, it throws an error.
  * @returns AppStateContextType | undefined
  */
-export function useAppState(): AppStateContextType | undefined {
+export function useAppState(): AppStateContextType {
   // Use the context
   const context = useContext(AppStateContext);
   if (!context) {

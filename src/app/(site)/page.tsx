@@ -50,8 +50,8 @@ function HomePage(): React.ReactElement {
       </section>
       <section className="relative my-10 ">
         <div className="overflow-hidden flex items-center h-[40px] md:h-[150px] py-10">
-          {[...Array(2)].map((arr) => (
-            <div key={arr} className="flex flex-nowrap animate-slide">
+          {[...Array(2)].map((arr, index) => (
+            <div key={index} className="flex flex-nowrap animate-slide">
               {CLIENTS.map((client) => (
                 <div
                   key={client.alt}
@@ -127,16 +127,11 @@ function HomePage(): React.ReactElement {
                       </Avatar>
                       <div className=" text-foreground">
                         <CardTitle className="">{testimonial.name}</CardTitle>
-                        {/* <CardDescription className="dark:text-washed-purple-800">
-                          {testimonial.name.toLocaleLowerCase()}
-                        </CardDescription> */}
                       </div>
                     </div>
                   }
                   cardContent={
-                    <p className="dark:text-washed-purple-600">
-                      {testimonial.message}
-                    </p>
+                    <p className="dark:text-washed-purple-600">{testimonial.message}</p>
                   }
                 />
               ))}
@@ -189,26 +184,15 @@ function HomePage(): React.ReactElement {
               }
               cardContent={
                 <CardContent className="p-0">
-                  <span className=" dark:text-washed-purple-600">
-                    ${card.price}
-                  </span>
+                  <span className=" dark:text-washed-purple-600">${card.price}</span>
                   {+card.price > 0 ? (
-                    <span className="dark:text-washed-purple-800 ml-1">
-                      /mo
-                    </span>
+                    <span className="dark:text-washed-purple-800 ml-1">/mo</span>
                   ) : (
                     ""
                   )}
-                  <p className="dark:text-washed-purple-800">
-                    {card.description}
-                  </p>
-                  <Button
-                    variant="default"
-                    className="whitespace-nowrap w-full mt-4"
-                  >
-                    {card.planType === PRICING_PLANS.proplan
-                      ? "Go Pro"
-                      : "Get Started"}
+                  <p className="dark:text-washed-purple-800">{card.description}</p>
+                  <Button variant="default" className="whitespace-nowrap w-full mt-4">
+                    {card.planType === PRICING_PLANS.proplan ? "Go Pro" : "Get Started"}
                   </Button>
                 </CardContent>
               }

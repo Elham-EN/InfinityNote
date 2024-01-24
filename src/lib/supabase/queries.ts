@@ -1,8 +1,8 @@
 "use server"; //* Component Server
 
-import { files } from "../../../migrations/schema";
+import { files, workspaces } from "../../../migrations/schema";
 import db from "./db";
-import { Subscription } from "./supabase.types";
+import { Subscription, workspace } from "./supabase.types";
 import { validate } from "uuid";
 import { and, eq, ilike, notExists } from "drizzle-orm";
 
@@ -34,6 +34,21 @@ export async function getFiles(folderId: string): Promise<GetFilesType> {
       .orderBy(files.createdAt)
       .where(eq(files.folderId, folderId))) as File[] | [];
     return { data: result, error: null };
+  } catch (error) {
+    console.log(error);
+    return { data: null, error: "Error" };
+  }
+}
+
+interface CWSType {
+  data: null;
+  error: string | null;
+}
+
+export async function createWorkspace(workspace: workspace): Promise<CWSType> {
+  try {
+    await db.insert(workspaces).values(workspace);
+    return { data: null, error: null };
   } catch (error) {
     console.log(error);
     return { data: null, error: "Error" };
