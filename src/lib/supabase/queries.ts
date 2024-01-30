@@ -85,6 +85,8 @@ export async function getFolders(workspaceId: string): Promise<GetFoldersType> {
  * for the collaborators check suggests that the function aims to identify truly 
  * private workspaces for the user.
  * 
+ * The NOT EXISTS operator returns true if the subquery returns no row or record
+ * 
  * In PostgreSQL:
  *  # It selects the desired fields from the workspaces table (aliased as w).
  *  SELECT 
@@ -153,6 +155,24 @@ export async function getPrivateWorkspaces(userId: string) {
 /**
  * The purpose of the getCollaboratingWorkspaces function is to fetch a list
  * of workspaces from a database where the specified user is a collaborator.
+ * 
+ *  # Selects the specified fields from the workspaces table (aliased as w).
+*   SELECT 
+      w.id, w."createdAt", w."workspaceOwner", w.title, w."iconId", w.data, 
+      w."inTrash", w.logo, w."bannerUrl"
+    FROM users u
+    # Joins the users table (aliased as u) with the collaborators table (aliased 
+    # as c) where the user ID in users matches the user ID in collaborators.
+    INNER JOIN collaborators c ON u.id = c."userId"
+    # Further joins the workspaces table with the collaborators table where the 
+    # workspace ID in collaborators matches the ID in workspaces.
+    INNER JOIN workspaces w ON c."workspaceId" = w.id
+    # Filters to include only those records where the user ID in the users table 
+    # matches the specified userId.
+    WHERE u.id = userId;
+
+    This results in an array of workspace objects where the specified user is a 
+    collaborator.
  */
 export async function getCollaboratingWorkspaces(userId: string) {
   if (!userId) return [];
