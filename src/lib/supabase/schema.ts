@@ -126,11 +126,23 @@ export const subscriptions = pgTable("subscriptions", {
  * associated with a workspace. Sets up a foreign key relationship to the id
  * field of the workspaces table. This means each workspaceId must correspond to
  * an existing workspace.
+ * 
+  * CREATE TABLE collaborators (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      workspace_id UUID NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,
+      user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
+    );
+
  */
 export const collaborators = pgTable("collaborators", {
   // To stores UUID values in the PostgreSQL database, use the UUID data type.
   // random() function that returns a random number between 0 and 1
   id: uuid("id").defaultRandom().primaryKey().notNull(),
+  // workspace_id and user_id are both UUID types, not null, and they reference
+  // the id field of the workspaces and users tables, respectively. The ON
+  // DELETE CASCADE clause means if a referenced workspace or user is deleted,
+  // the corresponding entries in collaborators will also be deleted.
   workspaceId: uuid("workspace_id")
     .notNull()
     .references(() => workspaces.id, { onDelete: "cascade" }),
