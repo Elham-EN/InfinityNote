@@ -117,3 +117,30 @@ export const subscriptions = pgTable("subscriptions", {
     mode: "string",
   }).default(sql`now()`),
 });
+
+/**
+ * database table intended to keep track of which users are collaborating on
+ * which workspaces.
+ *
+ * workspaceId - this field is mandatory; every collaborator record must be
+ * associated with a workspace. Sets up a foreign key relationship to the id
+ * field of the workspaces table. This means each workspaceId must correspond to
+ * an existing workspace.
+ */
+export const collaborators = pgTable("collaborators", {
+  // To stores UUID values in the PostgreSQL database, use the UUID data type.
+  // random() function that returns a random number between 0 and 1
+  id: uuid("id").defaultRandom().primaryKey().notNull(),
+  workspaceId: uuid("workspace_id")
+    .notNull()
+    .references(() => workspaces.id, { onDelete: "cascade" }),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at", {
+    withTimezone: true,
+    mode: "string",
+  })
+    .defaultNow()
+    .notNull(),
+});
