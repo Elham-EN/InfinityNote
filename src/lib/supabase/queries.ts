@@ -3,9 +3,9 @@
 import { files, workspaces, folders, users } from "../../../migrations/schema";
 import { collaborators } from "./schema";
 import db from "./db";
-import { Folder, Subscription, workspace } from "./supabase.types";
+import { Folder, Subscription, User, workspace } from "./supabase.types";
 import { validate } from "uuid";
-import { and, eq, ilike, notExists } from "drizzle-orm";
+import { and, eq, exists, ilike, notExists } from "drizzle-orm";
 
 /**
  * Fetch data and queries from the database
@@ -133,7 +133,8 @@ export async function getPrivateWorkspaces(userId: string) {
       and(
         // The workspace is not listed in the collaborators table (indicating
         // it's not shared). This subquery uses notExists to filter out any
-        // workspaces that are shared with other users
+        // workspaces that are shared with other users. Because private workspace
+        // cannot have collaborators since it private.
         notExists(
           db
             .select()
@@ -203,6 +204,75 @@ export async function getCollaboratingWorkspaces(userId: string) {
   return collaboratedWorkspaces;
 }
 
+interface SharedWorkspaces {
+  id: string;
+  data: string | null;
+  createdAt: string | null;
+  workspaceOwner: string;
+  title: string;
+  iconId: string;
+  inTrash: string | null;
+  bannerUrl: string | null;
+  logo: string | null;
+}
+
+/**
+ * to retrieve a list of workspace objects from a database where the user identified by
+ * userId is the owner of these workspaces, and these workspaces are shared with other
+ * users (indicated by a join with the collaborators table).
+ */
+export async function getSharedWorkspaces(userId: string): Promise<SharedWorkspaces[]> {
+  if (!userId) return [];
+  const sharedWorkspaces = (await db
+    .selectDistinct({
+      id: workspaces.id,
+      createdAt: workspaces.createdAt,
+      workspaceOwner: workspaces.workspaceOwner,
+      title: workspaces.title,
+      iconId: workspaces.iconId,
+      data: workspaces.data,
+      inTrash: workspaces.inTrash,
+      logo: workspaces.logo,
+      bannerUrl: workspaces.bannerUrl,
+    })
+    .from(workspaces)
+    .orderBy(workspaces.createdAt)
+    // Join the collaborators table with the workspaces table where
+    // workspaces.id matches the collaborators.workspaceId
+    .innerJoin(collaborators, eq(workspaces.id, collaborators.workspaceId))
+    .where(eq(workspaces.workspaceOwner, userId))) as workspace[];
+  return sharedWorkspaces;
+}
+
+export async function getCollaborators(workspaceId: string) {
+  try {
+    const response = await db
+      .select()
+      .from(collaborators)
+      .where(eq(collaborators.workspaceId, workspaceId));
+    if (!response.length) return [];
+    const userInformation: Promise<User | undefined>[] = response.map(async (user) => {
+      const exists = await db.query.users.findFirst({
+        where: (u, { eq }) => eq(u.id, user.userId),
+      });
+      return exists;
+    });
+    const resolvedUsers = await Promise.all(userInformation);
+    return resolvedUsers.filter(Boolean) as User[];
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getUsersFromSearch(email: string) {
+  if (!email) return [];
+  const accounts = db
+    .select()
+    .from(users)
+    .where(ilike(users.email, `${email}%`));
+  return accounts;
+}
+
 /**
  * Create Resources and Save it to the Database
  */
@@ -220,4 +290,20 @@ export async function createWorkspace(workspace: workspace): Promise<CWSType> {
     console.log(error);
     return { data: null, error: "Error" };
   }
+}
+
+/**
+ * to iterate through an array of User objects and for each user, check if there is
+ * already an existing record in the collaborators table that matches both the user's
+ * ID and a specific workspace ID. If such a record exists, insert it to the collobrators
+ */
+export async function addCollborators(users: User[], workspaceId: string) {
+  const response = users.forEach(async (user: User) => {
+    const userExists = await db.query.collaborators.findFirst({
+      where: (u, { eq }) => and(eq(u.userId, user.id), eq(u.workspaceId, workspaceId)),
+    });
+    if (!userExists) {
+      await db.insert(collaborators).values({ workspaceId, userId: user.id });
+    }
+  });
 }
