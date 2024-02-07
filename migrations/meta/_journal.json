@@ -29,6 +29,13 @@
       "when": 1704626383069,
       "tag": "0003_elite_nekra",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1706604954059,
+      "tag": "0004_brave_mentor",
+      "breakpoints": true
     }
   ]
 }

@@ -1,9 +1,10 @@
+"use client";
 import { AuthUser } from "@supabase/supabase-js";
 import { Subscription } from "../supabase/supabase.types";
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { getUserSubscriptionStatus } from "../supabase/queries";
-import { toast, useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 type SupabaseUserContextType = {
   user: AuthUser | null;
@@ -26,6 +27,7 @@ interface SupabaseUserProviderProps {
 export function SupabaseUserProvider({ children }: SupabaseUserProviderProps) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
+  const { toast } = useToast();
   const supabase = createClientComponentClient();
   // Fetch the users details & Subscription status
   useEffect(() => {
@@ -47,7 +49,7 @@ export function SupabaseUserProvider({ children }: SupabaseUserProviderProps) {
       }
     };
     getUser();
-  }, [supabase]);
+  }, [supabase, toast]);
   return (
     <SupabaseUserContext.Provider value={{ user, subscription }}>
       {children}

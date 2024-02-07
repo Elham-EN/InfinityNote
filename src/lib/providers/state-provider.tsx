@@ -20,6 +20,10 @@ import { getFiles } from "../supabase/queries";
 // appFolderType type is extended to include an additional property named
 // files in addition to the properties already present in Folder.
 export type appFoldersType = Folder & { files: File[] | [] };
+// a custom type that combines the properties of a workspace with an additional
+// folders property. This folders property can either be an array of folder
+// objects or an empty array, allowing it to represent workspaces that either
+// contain folders or have none.
 export type appWorkspacesType = workspace & {
   folders: appFoldersType[] | [];
 };

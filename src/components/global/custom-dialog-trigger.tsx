@@ -28,7 +28,7 @@ export default function CustomDialogTrigger({
     <div>
       <Dialog>
         <DialogTrigger className={clsx("", className)}>{children}</DialogTrigger>
-        <DialogContent className="h-screen block sm:h-[440px] overflow-scroll w-full">
+        <DialogContent className="h-screen block sm:h-[440px] overflow-y-scroll w-full">
           <DialogHeader>
             <DialogTitle>{header}</DialogTitle>
             <DialogDescription>{description}</DialogDescription>

@@ -17,12 +17,7 @@ import { sql } from "drizzle-orm";
  * into local schema file
  */
 
-export const keyStatus = pgEnum("key_status", [
-  "expired",
-  "invalid",
-  "valid",
-  "default",
-]);
+export const keyStatus = pgEnum("key_status", ["expired", "invalid", "valid", "default"]);
 export const keyType = pgEnum("key_type", [
   "stream_xchacha20",
   "secretstream",
@@ -39,10 +34,7 @@ export const keyType = pgEnum("key_type", [
 export const factorType = pgEnum("factor_type", ["webauthn", "totp"]);
 export const factorStatus = pgEnum("factor_status", ["verified", "unverified"]);
 export const aalLevel = pgEnum("aal_level", ["aal3", "aal2", "aal1"]);
-export const codeChallengeMethod = pgEnum("code_challenge_method", [
-  "plain",
-  "s256",
-]);
+export const codeChallengeMethod = pgEnum("code_challenge_method", ["plain", "s256"]);
 export const pricingType = pgEnum("pricing_type", ["recurring", "one_time"]);
 export const pricingPlanInterval = pgEnum("pricing_plan_interval", [
   "year",
@@ -202,4 +194,20 @@ export const subscriptions = pgTable("subscriptions", {
     withTimezone: true,
     mode: "string",
   }).default(sql`now()`),
+});
+
+export const collaborators = pgTable("collaborators", {
+  id: uuid("id").defaultRandom().primaryKey().notNull(),
+  workspaceId: uuid("workspace_id")
+    .notNull()
+    .references(() => workspaces.id, { onDelete: "cascade" }),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at", {
+    withTimezone: true,
+    mode: "string",
+  })
+    .defaultNow()
+    .notNull(),
 });

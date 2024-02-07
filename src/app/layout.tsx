@@ -4,6 +4,7 @@ import "./globals.css";
 import db from "@/lib/supabase/db";
 import { ThemeProvider } from "@/lib/providers/theme-provider";
 import AppStateProvider from "@/lib/providers/state-provider";
+import { SupabaseUserProvider } from "@/lib/providers/supabase-user-provider";
 import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -25,8 +26,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           disableTransitionOnChange
         >
           <AppStateProvider>
-            {children}
-            <Toaster />
+            <SupabaseUserProvider>
+              {children}
+              <Toaster />
+            </SupabaseUserProvider>
           </AppStateProvider>
         </ThemeProvider>
       </body>
