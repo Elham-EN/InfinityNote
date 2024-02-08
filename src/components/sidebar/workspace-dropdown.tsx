@@ -78,7 +78,7 @@ export default function WorkspaceDropdown({
       {isOpen && (
         <div
           className="origin-top-right absolute w-full rounded-md shadow-md z-50
-          h-[290px] backdrop-blur-lg group overflow-y-scroll 
+          h-[190px] md:h-[490px] backdrop-blur-lg group overflow-y-scroll 
           border-[1px] border-muted"
         >
           <div className="rounded-md flex flex-col">

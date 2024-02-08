@@ -11,6 +11,7 @@ import {
   getUserSubscriptionStatus,
 } from "@/lib/supabase/queries";
 import WorkspaceDropdown from "./workspace-dropdown";
+import PlanUsage from "./plan-usage";
 
 interface SidebarProps {
   params: { workspaceid: string };
@@ -73,6 +74,10 @@ export default async function Sidebar({
             ...collaboratingWorkspaces,
             ...sharedWorkspaces,
           ].find((workspace) => workspace.id === params.workspaceid)}
+        />
+        <PlanUsage
+          foldersLength={workspaceFolderData?.length || 0}
+          subscription={subscriptionData!}
         />
       </div>
     </aside>
